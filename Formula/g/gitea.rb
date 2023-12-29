@@ -35,10 +35,14 @@ class Gitea < Formula
     bin.install "gitea"
   end
 
+  def post_install
+    (var/"gitea/custom").mkpath
+  end
+
   service do
-    run [opt_bin/"gitea", "web"]
+    run [opt_bin/"gitea", "web", "--work-path", var/"gitea", "--config", etc/"gitea.ini"]
     keep_alive true
-    working_dir opt_libexec
+    working_dir var/"gitea"
     log_path var/"log/gitea.log"
     error_log_path var/"log/gitea.log"
   end
